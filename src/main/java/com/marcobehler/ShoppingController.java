@@ -1,10 +1,7 @@
 package com.marcobehler;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -26,9 +23,9 @@ public class ShoppingController {
 
 
     @RequestMapping(value = "/basket/update", method = RequestMethod.POST)
-    public String updateBasket(@RequestParam String name, @RequestParam Integer id, @RequestParam @DateTimeFormat(pattern = "dd.MM.yyyy") Date added) {
+    public String updateBasket(@RequestBody Item item) {
         // fake!!!
-        return "Item [" + id + " , " + name + " , " + added + " ] got added to the shopping basket!";
+        return "Item [" + item.id + " , " + item.name + " , " + item.added + " ] got added to the shopping basket!";
     }
 
 
