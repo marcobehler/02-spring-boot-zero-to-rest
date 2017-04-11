@@ -22,6 +22,17 @@ import java.util.List;
 public class ShoppingController {
 
 
+    @RequestMapping(value = "/item/{id:\\d+}-{slug:[\\w-]+}")
+    public Item details(@PathVariable Integer id, @PathVariable String slug) {
+        // fake! db!
+        Item item = new Item();
+        item.id = id;
+        item.slug = slug;
+        item.name = "fake name";
+        item.details = "This sword is so big, even the mountain couldn't handle it!";
+        return item;
+    }
+
     @RequestMapping(value = "/basket/update", method = RequestMethod.POST)
     public String updateBasket(@RequestBody Item item) {
         // fake!!!
@@ -36,18 +47,4 @@ public class ShoppingController {
         return Arrays.asList(new Item(name, id, added));
     }
 
-    public static class Item {
-        public String name;
-        public Integer id;
-        public Date added;
-
-        public Item() {
-        }
-
-        public Item(String name, Integer id, Date added) {
-            this.name = name;
-            this.id = id;
-            this.added = added;
-        }
-    }
 }
