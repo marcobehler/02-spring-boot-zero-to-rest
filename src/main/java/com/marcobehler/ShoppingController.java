@@ -1,9 +1,13 @@
 package com.marcobehler;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +25,11 @@ import java.util.List;
 @RestController
 public class ShoppingController {
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
 
     @RequestMapping(value = "/item/{id:\\d+}-{slug:[\\w-]+}")
     public Item details(@PathVariable Integer id, @PathVariable String slug) {
@@ -39,10 +48,17 @@ public class ShoppingController {
         return "Item [" + item.id + " , " + item.name + " , " + item.added + " ] got added to the shopping basket!";
     }
 
+    @RequestMapping(value = "/history", method = RequestMethod.GET)
+    public List<Item> history(@RequestParam Date date) {
+        // todo real search
+        System.out.println(date);
+        return Collections.emptyList();
+    }
 
     @RequestMapping(value = "/searchItems", method = RequestMethod.GET)
-    public List<Item> searchItems(@RequestParam(required = false) String name, @RequestParam(required = false) Integer id,
-                                  @RequestParam(required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") Date added) {
+    public List<Item> searchItems(@RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") Date added) {
         // fake!
         return Arrays.asList(new Item(name, id, added));
     }
